@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawnel | Mascotas</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body data-page="mascotas">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🐾</span>
+        <div>
+          <h1>Pawnel</h1>
+          <small>Gestión Veterinaria</small>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <a href="/index.html" class="nav-link">📊 Estadísticas</a>
+        <a href="/pawnel_mascotas.html" class="nav-link active">🐶 Mascotas</a>
+        <a href="/pawnel_consulta.html" class="nav-link">🩺 Consultas</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <div>
+          <h2>Gestión de Mascotas</h2>
+          <p>Alta, consulta y edición independiente de pacientes</p>
+        </div>
+      </header>
+
+      <section class="kpi-grid">
+        <article class="kpi-card">
+          <span class="kpi-label">Total Pacientes</span>
+          <strong class="kpi-value" id="m-stat-total">0</strong>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Perros</span>
+          <strong class="kpi-value" id="m-stat-perros">0</strong>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Gatos</span>
+          <strong class="kpi-value" id="m-stat-gatos">0</strong>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Otras Especies</span>
+          <strong class="kpi-value" id="m-stat-otros">0</strong>
+        </article>
+      </section>
+
+      <section class="card">
+        <h3>Registrar Nueva Mascota</h3>
+        <form id="form-mascota" class="form-grid">
+          <div class="form-group">
+            <label for="m-nombre">Nombre</label>
+            <input type="text" id="m-nombre" placeholder="Ej. Toby" required>
+          </div>
+          <div class="form-group">
+            <label for="m-especie">Especie</label>
+            <select id="m-especie" required>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+              <option value="Ave">Ave</option>
+              <option value="Exótico">Exótico</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="m-raza">Raza</label>
+            <input type="text" id="m-raza" placeholder="Ej. Labrador" required>
+          </div>
+          <div class="form-group">
+            <label for="m-edad">Edad (años)</label>
+            <input type="number" id="m-edad" min="0" max="40" step="0.5" placeholder="Ej. 3" required>
+          </div>
+          <div class="form-group">
+            <label for="m-propietario">Propietario</label>
+            <input type="text" id="m-propietario" placeholder="Nombre del dueño" required>
+          </div>
+          <div class="form-group">
+            <label for="m-dni">DNI Propietario</label>
+            <input type="text" id="m-dni" placeholder="12345678A" required>
+          </div>
+          <div class="form-group">
+            <label for="m-telefono">Teléfono</label>
+            <input type="tel" id="m-telefono" placeholder="600 123 456" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">+ Guardar Mascota</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="toolbar">
+          <h3>Listado de Mascotas</h3>
+          <div class="filters">
+            <input type="text" id="search-mascota" placeholder="Buscar por nombre, raza o dueño..."
+              aria-label="Buscar mascotas" title="Buscar mascotas">
+            <select id="filter-especie" aria-label="Filtrar mascotas por especie" title="Filtrar mascotas por especie">
+              <option value="Todas">Todas las especies</option>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+              <option value="Ave">Ave</option>
+              <option value="Exótico">Exótico</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Especie</th>
+                <th>Raza</th>
+                <th>Edad</th>
+                <th>Propietario</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-mascotas-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de Edición de Mascota -->
+  <div id="modal-mascota" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Modificar Mascota</h3>
+        <button type="button" class="btn-close" data-close="modal-mascota">✕</button>
+      </div>
+      <form id="form-edit-mascota" class="form-grid">
+        <input type="hidden" id="edit-m-id">
+        <div class="form-group">
+          <label for="edit-m-nombre">Nombre</label>
+          <input type="text" id="edit-m-nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-m-especie">Especie</label>
+          <select id="edit-m-especie" required>
+            <option value="Perro">Perro</option>
+            <option value="Gato">Gato</option>
+            <option value="Ave">Ave</option>
+            <option value="Exótico">Exótico</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-m-raza">Raza</label>
+          <input type="text" id="edit-m-raza" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-m-edad">Edad (años)</label>
+          <input type="number" id="edit-m-edad" min="0" max="40" step="0.5" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-m-propietario">Propietario</label>
+          <input type="text" id="edit-m-propietario" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-m-dni">DNI Propietario</label>
+          <input type="text" id="edit-m-dni" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-m-telefono">Teléfono</label>
+          <input type="tel" id="edit-m-telefono" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" data-close="modal-mascota">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>

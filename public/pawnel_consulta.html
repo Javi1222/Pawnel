@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawnel | Consultas</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body data-page="consultas">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🐾</span>
+        <div>
+          <h1>Pawnel</h1>
+          <small>Gestión Veterinaria</small>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <a href="/" class="nav-link">📊 Estadísticas</a>
+        <a href="/pawnel_mascotas.html" class="nav-link">🐶 Mascotas</a>
+        <a href="/pawnel_consulta.html" class="nav-link active">🩺 Consultas</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <div>
+          <h2>Gestión de Consultas</h2>
+          <p>Registro, seguimiento y modificación de visitas veterinarias</p>
+        </div>
+      </header>
+
+      <section class="kpi-grid">
+        <article class="kpi-card">
+          <span class="kpi-label">Total Consultas</span>
+          <strong class="kpi-value" id="c-stat-total">0</strong>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Pendientes</span>
+          <strong class="kpi-value text-warning" id="c-stat-pendientes">0</strong>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Completadas</span>
+          <strong class="kpi-value text-success" id="c-stat-completadas">0</strong>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Ingresos Totales</span>
+          <strong class="kpi-value" id="c-stat-ingresos">0 €</strong>
+        </article>
+      </section>
+
+      <section class="card">
+        <h3>Nueva Consulta</h3>
+        <form id="form-consulta" class="form-grid">
+          <div class="form-group">
+            <label for="c-paciente">Nombre del Paciente</label>
+            <input type="text" id="c-paciente" placeholder="Ej. Luna" required>
+          </div>
+          <div class="form-group">
+            <label for="c-fecha">Fecha</label>
+            <input type="date" id="c-fecha" required>
+          </div>
+          <div class="form-group">
+            <label for="c-motivo">Motivo / Diagnóstico</label>
+            <input type="text" id="c-motivo" placeholder="Ej. Vacunación anual" required>
+          </div>
+          <div class="form-group">
+            <label for="c-veterinario">Veterinario</label>
+            <input type="text" id="c-veterinario" placeholder="Ej. Dra. Gómez" required>
+          </div>
+          <div class="form-group">
+            <label for="c-estado">Estado</label>
+            <select id="c-estado" required>
+              <option value="Pendiente">Pendiente</option>
+              <option value="En curso">En curso</option>
+              <option value="Completada">Completada</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="c-coste">Importe (€)</label>
+            <input type="number" id="c-coste" min="0" step="0.01" placeholder="Ej. 45.00" required>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">+ Registrar Consulta</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="toolbar">
+          <h3>Historial de Consultas</h3>
+          <div class="filters">
+            <input type="text" id="search-consulta" placeholder="Buscar por paciente, motivo o vet..."
+              aria-label="Buscar consultas" title="Buscar consultas">
+            <select id="filter-estado" aria-label="Filtrar consultas por estado" title="Filtrar consultas por estado">
+              <option value="Todos">Todos los estados</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="En curso">En curso</option>
+              <option value="Completada">Completada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Paciente</th>
+                <th>Fecha</th>
+                <th>Motivo</th>
+                <th>Veterinario</th>
+                <th>Estado</th>
+                <th>Importe</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-consultas-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de Edición de Consulta -->
+  <div id="modal-consulta" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Modificar Consulta</h3>
+        <button type="button" class="btn-close" data-close="modal-consulta">✕</button>
+      </div>
+      <form id="form-edit-consulta" class="form-grid">
+        <input type="hidden" id="edit-c-id">
+        <div class="form-group">
+          <label for="edit-c-paciente">Nombre del Paciente</label>
+          <input type="text" id="edit-c-paciente" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-c-fecha">Fecha</label>
+          <input type="date" id="edit-c-fecha" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-c-motivo">Motivo / Diagnóstico</label>
+          <input type="text" id="edit-c-motivo" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-c-veterinario">Veterinario</label>
+          <input type="text" id="edit-c-veterinario" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-c-estado">Estado</label>
+          <select id="edit-c-estado" required>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En curso">En curso</option>
+            <option value="Completada">Completada</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-c-coste">Importe (€)</label>
+          <input type="number" id="edit-c-coste" min="0" step="0.01" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" data-close="modal-consulta">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>

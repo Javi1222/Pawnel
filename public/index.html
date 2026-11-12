@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawnel | Panel Veterinario</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body data-page="dashboard">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-icon">🐾</span>
+        <div>
+          <h1>Pawnel</h1>
+          <small>Gestión Veterinaria</small>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <a href="/index.html" class="nav-link">📊 Estadísticas</a>
+        <a href="/pawnel_mascotas.html " class="nav-link active">🐶 Mascotas</a>
+        <a href="/pawnel_consulta.html" class="nav-link">🩺 Consultas</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <div>
+          <h2>Resumen de la Clínica</h2>
+          <p>Estadísticas generales de pacientes y actividad médica</p>
+        </div>
+      </header>
+
+      <section class="kpi-grid">
+        <article class="kpi-card">
+          <span class="kpi-label">Total Mascotas</span>
+          <strong class="kpi-value" id="stat-total-mascotas">0</strong>
+          <span class="kpi-sub">Registradas en base de datos</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Total Consultas</span>
+          <strong class="kpi-value" id="stat-total-consultas">0</strong>
+          <span class="kpi-sub">Historial clínico acumulado</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Consultas Pendientes</span>
+          <strong class="kpi-value text-warning" id="stat-pendientes">0</strong>
+          <span class="kpi-sub">Requieren atención o revisión</span>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-label">Facturación Estimada</span>
+          <strong class="kpi-value text-success" id="stat-ingresos">0 €</strong>
+          <span class="kpi-sub">Suma de consultas registradas</span>
+        </article>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="card">
+          <h3>Distribución por Especie</h3>
+          <div id="especies-bars" class="bars-container"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h3>Últimas Consultas</h3>
+            <a href="/Pawnel_consulta" class="btn-link">Ir a consultas →</a>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Paciente</th>
+                  <th>Fecha</th>
+                  <th>Motivo</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="ultimas-consultas-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+
+</html>
